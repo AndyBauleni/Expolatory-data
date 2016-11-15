@@ -1,9 +1,18 @@
-dataFile <- "C:/Users/Andy/Google Drive/XOOL/datasciencecoursera/exdata_data_household_power_consumption/household_power_consumption.txt"
-data <- read.table(dataFile, header=TRUE, sep=";", stringsAsFactors=FALSE, dec=".")
-subSetData <- data[data$Date %in% c("1/2/2007","2/2/2007") ,]
+# Exploratory Data Analysis - Assignment 2 - Q. #1
+# Andrew Bauleni November 15, 2016
+## This first line will likely take a few seconds. Be patient!
+if(!exists("NEI")){
+  NEI <- readRDS("C:/Users/Andy/Google Drive/XOOL/datasciencecoursera/exdata_data_NEI_data/summarySCC_PM25.rds")
+}
+if(!exists("SCC")){
+  SCC <- readRDS("C:/Users/Andy/Google Drive/XOOL/datasciencecoursera/exdata_data_NEI_data/Source_Classification_Code.rds")
+}
+# Have total emissions from PM2.5 decreased in the United States from 1999 to 2008? 
+# Using the base plotting system, make a plot showing the total PM2.5 emission from all sources 
+# for each of the years 1999, 2002, 2005, and 2008.
 
-#str(subSetData)
-globalActivePower <- as.numeric(subSetData$Global_active_power)
-png("C:/Users/Andy/Google Drive/XOOL/datasciencecoursera/Project 1/plot1.png", width=480, height=480)
-hist(globalActivePower, col="red", main="Global Active Power", xlab="Global Active Power (kilowatts)")
+aggregatedTotalByYear <- aggregate(Emissions ~ year, NEI, sum)
+
+png('plot1.png')
+barplot(height=aggregatedTotalByYear$Emissions, names.arg=aggregatedTotalByYear$year, xlab="years", ylab=expression('total PM'[2.5]*' emission'),main=expression('Total PM'[2.5]*' emissions at various years'))
 dev.off()
